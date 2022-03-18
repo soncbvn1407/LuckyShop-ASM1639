@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mobile Manager{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1>
+        Total: {{ count }}
+    </h1>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mobile in mobiles %}
+            <tr>
+                <td>{{ mobile.id }}</td>
+                <td><img class="img-thumbnail" src="{{ asset('uploads/images/' ~ mobile.image ~ '') }}" alt="{{ mobile.name }}" style="max-width: 300px;"></td>
+                <td>{{ mobile.name }}</td>
+                <td>{{ mobile.brand.name }}</td>
+                <td>{{ mobile.price }} USD</td>
+                <td>{{ mobile.amount }}</td>
+                <td>{{ mobile.Total }} </td>
+                <td>
+                    <a href="{{ asset('manager/mobile/update/' ~ mobile.id ~ '') }}" class="btn btn-warning" role="button">Update</a>
+                    <a href="{{ asset('manager/mobile/delete/' ~ mobile.id ~ '') }}" class="btn btn-danger" role="button" onclick="return confirm('Are you sure to delete?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ asset('manager/mobile/create') }}" class="btn btn-primary" role="button">Create</a>
+</div>
+{% endblock %}

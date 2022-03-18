@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block nav %}
+
+<style>
+    body {
+        background-color: lightblue;
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger text-white">
+    <a class="navbar-brand" href="#">&nbsp;LuckyShop</a>
+
+    <ul class="navbar-nav">
+        <!-- Home -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ asset('/') }}">Home</a> <!-- asset() là hàm lấy url của trang -->
+        </li>
+        <!-- Lọc theo hãng laptop -->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Brand</a>
+            <div class="dropdown-menu">
+                <!-- Dùng hàm for để lấy ra tất cả element trong brands (hãng mobile) -->
+                {% for brand in brands %}
+                    <a class="dropdown-item" href="{{ asset('brand/' ~ brand.id ~ '') }}">{{ brand.Name }}</a>
+                    <!-- ~ là nối chuỗi (để ra dạng brand/abc), phải thêm ~ '' ở sau để không bị lỗi (bug của Twig) -->
+                {% endfor %}
+            </div>
+        </li>
+        <!-- Trang quản lý -->
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">Manager</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ asset('manager/mobile') }}">Mobile</a>
+                <a class="dropdown-item" href="{{ asset('manager/brand') }}">Brand</a>
+            </div>
+        </li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block body %}
+<div class="container d-flex justify-content-center mt-50 mb-50">
+    {% for mobile in mobiles %}
+        <div class="col-md-4 mt-2" style="margin: 0 20px;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-img-actions"> <img src="{{ asset('uploads/images/' ~ mobile.image ~ '') }}" class="card-img img-fluid" alt=""> </div>
+                </div>
+                <div class="card-body bg-light text-center">
+                    <div class="mb-2">
+                        <h3 class="font-weight-semibold mb-2"> <a href="#" class="text-default mb-2" data-abc="true">{{ mobile.name }}</a></h3>
+                        <a href="{{ asset('brand/' ~ mobile.brand.id ~ '') }}" class="text-muted" data-abc="true">{{ mobile.brand.name }}</a>
+                    </div>
+                    <h3 class="mb-0 font-weight-semibold">${{ mobile.price }}</h3>
+                    <div>
+                        <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                        
+                    </div>
+                    <div class="text-muted mb-3">{% if (mobile.reviews == null) %}0{% else %}{{ mobile.reviews }}{% endif %} reviews</div> <button type="button" class="btn bg-cart"><i class="fa fa-cart-plus mr-2"></i> Add to cart</button>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
